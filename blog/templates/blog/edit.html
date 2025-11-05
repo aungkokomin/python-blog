@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="utf-8" />
+    {% if title %}
+    <title>{{ title }}</title>
+    {% else %}
+    <title>Edit Post</title>
+    {% endif %}
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <style>
+    :root{
+      --bg:#f5f7fb;
+      --card:#ffffff;
+      --accent:#2b6cb0;
+      --muted:#6b7280;
+      --radius:10px;
+      --glass: rgba(255,255,255,0.6);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,Segoe UI,Roboto,Arial;
+      background:linear-gradient(180deg,#eef3fb 0%,var(--bg) 100%);
+      color:#111827;
+      -webkit-font-smoothing:antialiased;
+    }
+    header{
+      padding:28px 18px;
+      text-align:center;
+    }
+    .site-title{
+      margin:0;
+      font-size:1.4rem;
+      color:var(--accent);
+    }
+    main{
+      max-width:720px;
+      margin:18px auto;
+      padding:0 16px 48px;
+    }
+    .form-card{
+      background:var(--card);
+      border-radius:var(--radius);
+      padding:20px;
+      box-shadow:0 10px 30px rgba(17,24,39,0.06);
+    }
+    label{
+      display:block;
+      font-weight:600;
+      margin-bottom:6px;
+      color:#0f172a;
+    }
+    input[type="text"], textarea{
+      width:100%;
+      padding:10px 12px;
+      border-radius:8px;
+      border:1px solid #e6e9ee;
+      background:linear-gradient(180deg,#fff,var(--glass));
+      color:#0b1220;
+      font-size:0.95rem;
+      margin-bottom:14px;
+      resize:vertical;
+    }
+    .form-row{
+      margin-bottom:12px;
+    }
+    .actions{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      margin-top:8px;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:9px 14px;
+      border-radius:10px;
+      text-decoration:none;
+      font-weight:700;
+      font-size:0.95rem;
+      border:1px solid transparent;
+      cursor:pointer;
+    }
+    .btn-primary{
+      background:var(--accent);
+      color:white;
+      border-color:rgba(43,108,176,0.12);
+    }
+    .btn-secondary{
+      background:linear-gradient(90deg,#ffffff,rgba(255,255,255,0.6));
+      color:var(--accent);
+      border:1px solid rgba(43,108,176,0.12);
+      text-decoration:none;
+    }
+    .hint{
+      font-size:0.88rem;
+      color:var(--muted);
+    }
+    @media (max-width:520px){
+      .site-title{ font-size:1.2rem }
+      main{ padding:0 12px 36px }
+    }
+    </style>
+</head>
+<body>
+  <header>
+    <h1 class="site-title">{{ title|default:"Edit Post" }}</h1>
+  </header>
+
+  <main>
+    <section class="form-card" aria-labelledby="form-heading">
+      <h2 id="form-heading" style="margin:0 0 12px 0;font-size:1.1rem;">Edit Post</h2>
+
+      <form action="/blog/{{ post.id }}/edit" method="post">
+        {% csrf_token %}
+        <div class="form-row">
+          <label for="title">Title</label>
+          <input type="text" id="title" name="title" value="{{ post.title }}" required>
+        </div>
+
+        <div class="form-row">
+          <label for="author">Author</label>
+          <input type="text" id="author" name="author" value="{{ post.author }}" required>
+        </div>
+
+        <div class="form-row">
+          <label for="content">Content</label>
+          <textarea id="content" name="content" rows="10" required>{{ post.content }}</textarea>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn btn-primary">Update Post</button>
+          <a class="btn btn-secondary" href="/blog/">Cancel</a>
+          <span class="hint">Last edited: {{ post.date_posted|date:"F j, Y" }}</span>
+        </div>
+      </form>
+    </section>
+  </main>
+</body>
+</html>
