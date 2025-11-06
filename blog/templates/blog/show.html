@@ -1,110 +1,9 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  {% if title %}
-  <title>{{ title }}</title>
-  {% else %}
-  <title>Blog Post Detail</title>
-  {% endif %}
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <style>
-    :root{
-      --bg:#f5f7fb;
-      --card:#fff;
-      --accent:#2b6cb0;
-      --muted:#6b7280;
-      --radius:12px;
-      --shadow:0 10px 30px rgba(17,24,39,0.06);
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:Inter,system-ui,Segoe UI,Roboto,Arial;
-      background:linear-gradient(180deg,#eef3fb 0%,var(--bg) 100%);
-      color:#0f172a;
-      -webkit-font-smoothing:antialiased;
-      line-height:1.5;
-    }
-    header{
-      padding:28px 20px;
-      text-align:center;
-    }
-    .site-title{
-      margin:0;
-      font-size:1.5rem;
-      color:var(--accent);
-    }
-    main{
-      max-width:820px;
-      margin:18px auto;
-      padding:0 16px 48px;
-    }
-    .post-wrap{
-      background:var(--card);
-      border-radius:var(--radius);
-      padding:22px;
-      box-shadow:var(--shadow);
-      display:flex;
-      flex-direction:column;
-      gap:14px;
-    }
-    .post-title{
-      margin:0;
-      font-size:1.45rem;
-      letter-spacing:-0.01em;
-      color:#0b1220;
-    }
-    .meta{
-      font-size:0.9rem;
-      color:var(--muted);
-      display:flex;
-      gap:8px;
-      align-items:center;
-      flex-wrap:wrap;
-    }
-    .content{
-      color:#374151;
-      font-size:1rem;
-      white-space:pre-wrap;
-    }
-    .actions{
-      display:flex;
-      gap:10px;
-      margin-top:8px;
-    }
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 12px;
-      border-radius:10px;
-      text-decoration:none;
-      font-weight:600;
-      font-size:0.95rem;
-      border:1px solid transparent;
-      transition:transform .12s ease,box-shadow .12s ease;
-    }
-    .btn-primary{
-      background:var(--accent);
-      color:white;
-      border-color:rgba(43,108,176,0.12);
-    }
-    .btn-secondary{
-      background:linear-gradient(90deg,#ffffff,rgba(255,255,255,0.6));
-      color:var(--accent);
-      border:1px solid rgba(43,108,176,0.12);
-    }
-    .btn:hover{ transform:translateY(-3px) }
-    @media (max-width:520px){
-      .site-title{ font-size:1.2rem }
-      main{ padding:0 12px 36px }
-    }
-  </style>
-</head>
-<body>
+{% extends "blog/base.html" %}
+{% block header %}
+{% endblock %}
+{% block content %}
   <header>
-    <h1 class="site-title">{{ title|default:"Post Detail" }}</h1>
+      <h1 class="site-title">{{ title|default:"Post Detail" }}</h1>
   </header>
 
   <main>
@@ -121,10 +20,9 @@
       </div>
 
       <div class="actions">
-        <a class="btn btn-primary" href="/blog/{{ post.id }}/edit">Edit</a>
+        <a class="btn btn-edit" href="/blog/{{ post.id }}/edit">Edit</a>
         <a class="btn btn-secondary" href="/blog/">Back to Home</a>
       </div>
     </article>
   </main>
-</body>
-</html>
+{% endblock %}

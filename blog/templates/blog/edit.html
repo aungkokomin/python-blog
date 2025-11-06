@@ -1,15 +1,6 @@
-<!doctype html>
-<html lang="en">
-<head>
-    {% load static %}
-    <meta charset="utf-8" />
-    {% if title %}
-    <title>{{ title }}</title>
-    {% else %}
-    <title>Edit Post</title>
-    {% endif %}
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <style>
+{% extends 'blog/base.html' %}
+{% block header %}
+<style>
     :root{
       --bg:#f5f7fb;
       --card:#ffffff;
@@ -103,16 +94,16 @@
       .site-title{ font-size:1.2rem }
       main{ padding:0 12px 36px }
     }
-    </style>
-</head>
-<body>
+</style>
+{% endblock %}
+{% block content %}
   <header>
     <h1 class="site-title">{{ title|default:"Edit Post" }}</h1>
   </header>
 
   <main>
     <section class="form-card" aria-labelledby="form-heading">
-      <h2 id="form-heading" style="margin:0 0 12px 0;font-size:1.1rem;">Edit Post</h2>
+<!--      <h2 id="form-heading" style="margin:0 0 12px 0;font-size:1.1rem;">Edit Post</h2>-->
 
       <form action="/blog/{{ post.id }}/edit" method="post">
         {% csrf_token %}
@@ -123,7 +114,14 @@
 
         <div class="form-row">
           <label for="author">Author</label>
-          <input type="text" id="author" name="author" value="{{ post.author }}" required>
+          <select id="author" name="author_id" required>
+            <option value="{{post.author_id}}" selected>{{ post.author }}</option>
+            {% for author in authors %}
+              {% if author != post.author %}
+                <option value="{{ author.id }}">{{ author }}</option>
+              {% endif %}
+            {% endfor %}
+          </select>
         </div>
 
         <div class="form-row">
@@ -134,10 +132,9 @@
         <div class="actions">
           <button type="submit" class="btn btn-primary">Update Post</button>
           <a class="btn btn-secondary" href="/blog/">Cancel</a>
-          <span class="hint">Last edited: {{ post.date_posted|date:"F j, Y" }}</span>
+          <span class="hint">Last edited: {{ post.updated_at|date:"F j, Y h:i:s A" }}</span>
         </div>
       </form>
     </section>
   </main>
-</body>
-</html>
+{% endblock %}

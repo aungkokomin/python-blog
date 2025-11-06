@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.db import models
-from .models import Post
+from .models import Post, Author
 
 def home(request):
     title = 'Home'
     posts = Post.objects.all()
+    for post in posts:
+        post.author_name = Author.objects.get(id=post.author_id).name
     data = {
         'posts': posts,
         'title': title
@@ -13,19 +15,25 @@ def home(request):
     return render(request, 'blog/home.html',data)
 
 def create(request):
+    authors = Author.objects.all()
+    title = 'Create Post'
+    data = {
+        'title': title,
+        'authors': authors
+    }
+    return render(request, 'blog/create.html', data)
+
+def store(request):
     if(request.method == 'POST'):
+        if(request.POST.get('author_id') is None):
+            author_id = 1
+        else:
+            author_id = request.POST.get('author_id')
         title = request.POST.get('title')
         content = request.POST.get('content')
-        author = request.POST.get('author')
-        post = Post(title=title, content=content, author=author)
+        post = Post(title=title, content=content, author_id=author_id)
         post.save()
         return redirect('blog-home')
-    else:
-        title = 'Create Post'
-        data = {
-            'title': title
-        }
-        return render(request, 'blog/create.html', data)
 
 def show(request, post_id):
     post = Post.objects.get(id=post_id)
@@ -37,16 +45,24 @@ def show(request, post_id):
 
 def edit(request, post_id):
     if(request.method == 'POST'):
-        post = Post.objects.first(id=post_id)
-        post.title = request.POST.get('title')
-        post.content = request.POST.get('content')
-        post.objects.update()
+        post_data = Post.objects.filter(id=post_id).first()
+        post_data.title = request.POST.get('title')
+        post_data.content = request.POST.get('content')
+        post_data.author_id = request.POST.get('author_id')
+        post_data.save()
         return redirect('blog-post-detail', post_id=post_id)
     else:
-        post = Post.objects.first(id=post_id)
-        title = 'Edit Post - '+post['title']
+        post = Post.objects.filter(id=post_id).first()
+        authors = Author.objects.all()
+        title = 'Edit Post - '+post.title
         data = {
             'title': title,
+            'authors': authors,
             'post' : post
         }
     return render(request, 'blog/edit.html', data)
+
+def delete(post_id):
+    post = Post.objects.get(id=post_id)
+    post.delete()
+    return redirect('blog-home')

@@ -1,0 +1,36 @@
+.site-title{
+      margin:0;
+      font-size:1.4rem;
+      color:var(--accent);
+    }
+    main{
+      max-width:720px;
+      margin:18px auto;
+      padding:0 16px 48px;
+    }
+    .form-card{
+      background:var(--card);
+      border-radius:var(--radius);
+      padding:20px;
+      box-shadow:0 10px 30px rgba(17,24,39,0.06);
+    }
+    label{
+      display:block;
+      font-weight:600;
+      margin-bottom:6px;
+      color:#0f172a;
+    }
+    input[type="text"], textarea{
+      width:100%;
+      padding:10px 12px;
+      border-radius:8px;
+      border:1px solid #e6e9ee;
+      background:linear-gradient(180deg,#fff,var(--glass));
+      color:#0b1220;
+      font-size:0.95rem;
+      margin-bottom:14px;
+      resize:vertical;
+    }
+    .form-row{
+      margin-bottom:12px;
+    }

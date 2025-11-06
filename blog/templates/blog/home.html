@@ -1,26 +1,29 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>{{ title|default:"My Blog" }}</title>
-  <style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ title|default:"My Blog" }}</title>
+    <style>
+    /* CSS Variables */
     :root{
       --bg:#f5f7fb;
       --card:#ffffff;
       --accent:#2b6cb0;
       --muted:#6b7280;
-      --radius:10px;
-      --glass: rgba(255,255,255,0.6);
+      --radius:12px;
     }
+    /* Basic resets and global styles */
     *{box-sizing:border-box}
     body{
       margin:0;
       font-family:Inter,system-ui,Segoe UI,Roboto,Arial;
       background:linear-gradient(180deg,#eef3fb 0%,var(--bg) 100%);
-      color:#111827;
+      color:#0f172a;
       -webkit-font-smoothing:antialiased;
+      line-height:1.5;
     }
+    /* Header/Layout styles */
     header{
       padding:32px 20px;
       text-align:center;
@@ -41,11 +44,23 @@
       margin:20px auto;
       padding:0 16px 48px;
     }
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-      gap:18px;
+
+    /* --- NEW --- Styles for top actions and vertical stacking */
+    .top-actions {
+        display: flex;
+        justify-content: flex-end; /* Pushes content to the right */
+        margin-bottom: 20px; /* Adds space below the button */
+        max-width: 600px; /* Matches main content width */
+        margin: 20px auto; /* Centers the container */
     }
+
+    /* Renamed 'grid' to 'post-list-vertical' for clarity and changed display */
+    .post-list-vertical{
+      display: flex;
+      flex-direction: column; /* Stacks items vertically */
+      gap: 18px; /* Space between posts */
+    }
+
     .post-card{
       background:var(--card);
       border-radius:var(--radius);
@@ -55,7 +70,12 @@
       flex-direction:column;
       min-height:180px;
       transition:transform .18s ease,box-shadow .18s ease;
+      max-width: 600px; /* Optional: Makes vertical cards look better on large screens */
+      margin: 0 auto;   /* Optional: Centers cards if max-width is set */
+      width: 100%;      /* Ensures width behaves correctly with margin auto */
     }
+    /* --- END NEW --- */
+
     .post-card:hover{
       transform:translateY(-6px);
       box-shadow:0 18px 40px rgba(17,24,39,0.08);
@@ -75,7 +95,6 @@
       line-height:1.5;
       flex:1;
       margin-bottom:14px;
-      white-space:pre-wrap;
       overflow:hidden;
     }
     .actions{
@@ -83,6 +102,7 @@
       gap:8px;
       align-items:center;
     }
+    /* Button base styles */
     .btn{
       display:inline-flex;
       align-items:center;
@@ -95,46 +115,64 @@
       border:1px solid transparent;
       transition:background .15s ease,transform .12s ease;
     }
+    /* Button color variations */
     .btn-show{
-      background:linear-gradient(90deg,#ffffff,var(--glass));
+      background:var(--card);
       color:var(--accent);
-      border-color:rgba(43,108,176,0.12);
+      border:1px solid rgba(43,108,176,0.12);
     }
     .btn-edit{
-      background:var(--accent);
+      background:var(--accent); /* Using accent for edit too */
       color:white;
     }
+    .btn-delete{
+      background:#ef4444;
+      color:white;
+    }
+    .btn-primary{
+      background:var(--accent);
+      color:white;
+      border-color:rgba(43,108,176,0.12);
+    }
     .btn:hover{ transform:translateY(-2px) }
+
+    /* Responsive adjustments */
     @media (max-width:520px){
       .site-title{ font-size:1.4rem }
       header{ padding:20px 12px }
     }
-  </style>
+    </style>
 </head>
 <body>
-  <header>
-    <h1 class="site-title">{{ title|default:"My Blog" }}</h1>
-    <div class="lead">Latest posts from the community</div>
-  </header>
-
-  <main>
-    <div class="grid">
-      {% for post in posts %}
-      <article class="post-card">
-        <h2 class="post-title">{{ post.title }}</h2>
-        <div class="meta">By <em>{{ post.author }}</em> • <time>{{ post.date_posted|date:"F j, Y" }}</time></div>
-        <div class="excerpt">{{ post.content|truncatewords:30 }}</div>
-        <div class="actions">
-          <a class="btn btn-show" href="/blog/{{ post.id }}/show">Show</a>
-          <a class="btn btn-edit" href="/blog/{{ post.id }}/edit">Edit</a>
+    <header>
+        <h1 class="site-title">{{ title|default:"My Blog" }}</h1>
+        <div class="lead">Latest posts from the community</div>
+    </header>
+    <main>
+        <!-- This container handles moving the button to the right -->
+        <div class="top-actions">
+            <a href="/blog/create" class="btn btn-primary"><b>&#43;</b> Create Post</a>
         </div>
-      </article>
-      {% empty %}
-      <div style="padding:24px;background:var(--card);border-radius:var(--radius);text-align:center;color:var(--muted)">
-        No posts yet.
+
+        <!-- Renamed class from 'grid' to 'post-list-vertical' -->
+        <div class="post-list-vertical">
+            {% for post in posts %}
+            <article class="post-card">
+                <h2 class="post-title">{{ post.title }}</h2>
+                <div class="meta">By <em>{{ post.author }}</em> • <time>{{ post.date_posted|date:"F j, Y, h:i A" }}</time></div>
+                <div class="excerpt">{{ post.content|truncatewords:30 }}</div>
+                <div class="actions">
+                    <a class="btn btn-show" href="/blog/{{ post.id }}/show">Show</a>
+                    <a class="btn btn-edit" href="/blog/{{ post.id }}/edit">Edit</a>
+                    <a class="btn btn-delete" href="/blog/{{ post.id }}/delete" onclick="return confirm('Are you sure you want to delete this post?');">Delete</a>
+                </div>
+            </article>
+            {% empty %}
+            <div style="padding:24px;background:var(--card);border-radius:var(--radius);text-align:center;color:var(--muted); max-width: 600px; margin: 0 auto; width: 100%;">
+                No posts yet.
+            </div>
+            {% endfor %}
       </div>
-      {% endfor %}
-    </div>
-  </main>
+    </main>
 </body>
 </html>
