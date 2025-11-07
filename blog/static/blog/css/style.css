@@ -123,7 +123,7 @@
       border-radius:var(--radius);
       padding:20px;
       box-shadow:0 6px 18px rgba(17,24,39,0.06);
-      max-width:480px;
+      max-width:700px;
       margin:40px auto;
     }
     #form-heading{
@@ -163,6 +163,19 @@
       outline:none;
       border-color:var(--accent);
       box-shadow:0 0 0 3px rgba(43,108,176,0.2);
+    }
+    select {
+      padding:10px 12px;
+      border:1px solid #d1d5db;
+      border-radius:6px;
+      font-size:1rem;
+      font-family:inherit;
+      background:#ffffff;
+    }
+    select:focus {
+        outline:none;
+        border-color:var(--accent);
+        box-shadow:0 0 0 3px rgba(43,108,176,0.2);
     }
     .post-wrap{
       background:var(--card);
