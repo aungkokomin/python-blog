@@ -1,5 +1,3 @@
-from tkinter.font import names
-
 from django.shortcuts import redirect, render
 from django.db import models
 from ..models import Author

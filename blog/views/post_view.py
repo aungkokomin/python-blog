@@ -3,7 +3,9 @@ from django.http import HttpResponse
 from django.db import models
 #from .models import Post, Author
 from ..models import Post, Author
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url='/login/')
 def home(request):
     title = 'Home'
     posts = Post.objects.all()
@@ -25,8 +27,8 @@ def create(request):
     return render(request, 'blog/create.html', data)
 
 def store(request):
-    if(request.method == 'POST'):
-        if(request.POST.get('author_id') is None):
+    if request.method == 'POST':
+        if request.POST.get('author_id') is None:
             author_id = 1
         else:
             author_id = request.POST.get('author_id')
@@ -35,6 +37,8 @@ def store(request):
         post = Post(title=title, content=content, author_id=author_id)
         post.save()
         return redirect('blog-home')
+    else:
+        return HttpResponse('Invalid Method')
 
 def show(request, post_id):
     post = Post.objects.get(id=post_id)
@@ -45,7 +49,7 @@ def show(request, post_id):
     return render(request, 'blog/show.html', data)
 
 def edit(request, post_id):
-    if(request.method == 'POST'):
+    if request.method == 'POST':
         post_data = Post.objects.filter(id=post_id).first()
         post_data.title = request.POST.get('title')
         post_data.content = request.POST.get('content')
