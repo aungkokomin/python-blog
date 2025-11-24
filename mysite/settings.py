@@ -115,7 +115,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+# Use a leading slash for STATIC_URL
+STATIC_URL = '/static/'
+
+# Include the project-level `static/` directory so {% static %} finds files under mysite/static/
+from pathlib import Path as _Path  # tiny local alias to avoid changing existing BASE_DIR usage
+STATICFILES_DIRS = [BASE_DIR / 'static']
+
+# Where `collectstatic` will gather files for production (optional)
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

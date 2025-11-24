@@ -13,7 +13,25 @@ def login_view(request):
             return redirect('blog-home')
         else:
             error_message = 'Invalid username or password'
-            return render(request, 'login.html', {'error_message': error_message})
+            return render(request, 'login.html', {
+                'form': LoginForm.LoginForm(),
+                'error_message': error_message
+            })
     else:
         form = LoginForm.LoginForm()
         return render(request, 'login.html', {'form': form})
+
+def logout_view(request):
+    logout(request)
+    return redirect('blog-home')
+
+def register_view(request):
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    else:
+        form = RegisterForm()
+    return render(request, 'register.html', {'form': form})
+

@@ -1,47 +1,5 @@
-<!DOCTYPE html>
-{% load static %}
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>{{ title|default:"My Blog" }}</title>
-    <link rel="stylesheet" href="{% static 'blog/css/style.css' %}">
-</head>
-<body>
-    <aside class="sidebar" aria-label="Sidebar">
-        <div class="brand">
-            <div style="width:44px;height:44px;border-radius:10px;background:white;color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700">B</div>
-            <div>
-                <h2 style="margin:0;color:white">My Blog</h2>
-                <div style="font-size:0.82rem;color:rgba(255,255,255,0.7)">Admin Dashboard</div>
-            </div>
-        </div>
-        <nav class="nav">
-            <a href="/blog" class="active">Dashboard</a>
-            <a href="/blog/create">Create Post</a>
-            <a href="/blog">All Posts</a>
-        </nav>
-        <div class="profile">
-            <div class="avatar">{{ user.username|first|upper }}</div>
-            <div>
-                <div class="name">{{ user.get_full_name|default:user.username }}</div>
-                <div class="email">{{ user.email }}</div>
-            </div>
-            <div>
-                {% url 'logout' as logout_url %}
-                {% if logout_url %}
-                <a href="{{ logout_url }}" class="btn btn-ghost">
-                    <img src="{% static 'blog/images/logout.png' %}" alt="Logout" style="width:30px;height:30px"/>
-                </a>
-                {% else %}
-                <a href="/logout/" class="btn btn-ghost">
-                    <img src="{% static 'blog/images/logout.png' %}" alt="Logout" style="width:30px;height:30px"/>
-                </a>
-                {% endif %}
-            </div>
-        </div>
-    </aside>
-
+{% extends "blog/base.html" %}
+{% block content %}
     <main class="main">
         <div class="topbar" role="navigation" aria-label="Top navigation">
             <div class="topbar-left" style="display:flex;align-items:center;gap:12px">
@@ -62,18 +20,6 @@
                     <input name="q" placeholder="Search posts..." style="padding:8px;border-radius:8px;border:1px solid rgba(15,23,42,0.06)" />
                     <button class="btn btn-ghost" type="submit">Search</button>
                 </form>
-                <!--            <div style="display:flex;align-items:center;gap:8px">-->
-                <!--              <div class="avatar" style="width:36px;height:36px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.06);font-weight:700">-->
-                <!--                {{ user.username|first|upper }}-->
-                <!--              </div>-->
-                
-                <!--              {% url 'logout' as logout_url %}-->
-                <!--              {% if logout_url %}-->
-                <!--              <a href="{{ logout_url }}" class="btn btn-ghost">Logout</a>-->
-                <!--              {% else %}-->
-                <!--              <a href="/logout/" class="btn btn-ghost">Logout</a>-->
-                <!--              {% endif %}-->
-                <!--            </div>-->
             </div>
         </div>
 
@@ -102,5 +48,4 @@
             {% endfor %}
         </section>
     </main>
-</body>
-</html>
+{% endblock %}

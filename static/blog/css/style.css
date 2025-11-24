@@ -102,6 +102,50 @@
     .meta{ font-size:0.86rem; color:var(--muted); margin-bottom:12px }
     .excerpt{ color:#374151; line-height:1.5; flex:1; margin-bottom:14px; overflow:hidden }
 
+    /* Form Styles */
+    .form-card{
+        background:var(--card);
+        border-radius:var(--radius);
+        padding:20px;
+        box-shadow:0 10px 30px rgba(17,24,39,0.06);
+    }
+    .form-title{
+        margin:0 0 14px 0;
+        font-size:1.2rem;
+        /* Dark Blue color code */
+        color:#1e40af;
+    }
+    label{
+        display:block;
+        font-weight:600;
+        margin-bottom:6px;
+        color:#0f172a;
+    }
+    input[type="text"], textarea{
+        width:100%;
+        padding:10px 12px;
+        border-radius:8px;
+        border:1px solid #e6e9ee;
+        background:linear-gradient(180deg,#fff,var(--glass));
+        color:#0b1220;
+        font-size:0.95rem;
+        margin-bottom:14px;
+        resize:vertical;
+    }
+    select{
+        width:100%;
+        padding:10px 12px;
+        border-radius:8px;
+        border:1px solid #e6e9ee;
+        background:linear-gradient(180deg,#fff,var(--glass));
+        color:#0b1220;
+        font-size:0.95rem;
+        margin-bottom:14px;
+    }
+    .form-row{
+        margin-bottom:12px;
+    }
+
     /* Buttons */
     .btn{
       display:inline-flex;

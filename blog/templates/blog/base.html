@@ -2,15 +2,45 @@
 {% load static %}
 <html lang="en">
 <head>
-    {% block header %}
-    {% endblock %}
-    <meta charset="UTF-8">
-    <title>
-        {{ title|default:"My Blog" }}
-    </title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{{ title|default:"My Blog" }}</title>
     <link rel="stylesheet" href="{% static 'blog/css/style.css' %}">
 </head>
 <body>
+    <aside class="sidebar" aria-label="Sidebar">
+        <div class="brand">
+            <div style="width:44px;height:44px;border-radius:10px;background:white;color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700">B</div>
+            <div>
+                <h2 style="margin:0;color:white">My Blog</h2>
+                <div style="font-size:0.82rem;color:rgba(255,255,255,0.7)">Admin Dashboard</div>
+            </div>
+        </div>
+        <nav class="nav">
+            <a href="{{ home_url }}" class="active">Dashboard</a>
+            <a href="/blog/create">Create Post</a>
+        </nav>
+        <div class="profile">
+            <div class="avatar">{{ user.username|first|upper }}</div>
+            <div>
+                <div class="name">{{ user.get_full_name|default:user.username }}</div>
+                <div class="email">{{ user.email }}</div>
+            </div>
+            <div>
+                {% url 'logout' as logout_url %}
+                {% if logout_url %}
+                <a href="{{ logout_url }}" class="btn btn-ghost">
+                    <img src="{% static 'blog/icons/logout.png' %}" alt="Logout" style="width:30px;height:30px"/>
+                </a>
+                {% else %}
+                <a href="/logout/" class="btn btn-ghost">
+                    <img src="{% static 'blog/icons/logout.png' %}" alt="Logout" style="width:30px;height:30px"/>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </aside>
+
     {% block content %}
     {% endblock %}
 </body>

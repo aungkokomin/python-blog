@@ -1,218 +1,24 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <style>
-         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        body::before {
-            content: '';
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            top: -200px;
-            right: -200px;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        body::after {
-            content: '';
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            bottom: -150px;
-            left: -150px;
-            animation: float 8s ease-in-out infinite reverse;
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0px);
-            }
-            50% {
-                transform: translateY(20px);
-            }
-        }
-
-        .login-container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            padding: 40px;
-            width: 100%;
-            max-width: 420px;
-            animation: slideUp 0.5s ease;
-            position: relative;
-            z-index: 1;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        h1 {
-            color: #333;
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 28px;
-            font-weight: 600;
-        }
-
-        form p {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            color: #555;
-            font-weight: 500;
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-
-        input[type="text"],
-        input[type="password"],
-        input[type="email"] {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 15px;
-            transition: all 0.3s ease;
-            background: #f8f9fa;
-        }
-
-        input[type="text"]:focus,
-        input[type="password"]:focus,
-        input[type="email"]:focus {
-            outline: none;
-            border-color: #667eea;
-            background: white;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        button[type="submit"] {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-        }
-
-        button[type="submit"]:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-        }
-
-        button[type="submit"]:active {
-            transform: translateY(0);
-        }
-
-        .helptext {
-            display: block;
-            font-size: 12px;
-            color: #888;
-            margin-top: 5px;
-            line-height: 1.4;
-        }
-
-        .errorlist {
-            list-style: none;
-            color: #e74c3c;
-            font-size: 13px;
-            margin-top: 5px;
-            padding: 8px 12px;
-            background: #fee;
-            border-radius: 6px;
-            border-left: 3px solid #e74c3c;
-        }
-
-        .additional-links {
-            text-align: center;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #e0e0e0;
-        }
-
-        .additional-links a {
-            color: #667eea;
-            text-decoration: none;
-            font-size: 14px;
-            transition: color 0.3s ease;
-        }
-
-        .additional-links a:hover {
-            color: #764ba2;
-            text-decoration: underline;
-        }
-
-        .remember-me-container {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .remember-me-container label {
-            margin-right: 10px;
-            font-size: 14px;
-            color: #555;
-            padding-top: 5px;
-            padding-left: 5px;
-        }
-
-        .remember-me-container input[type="checkbox"] {
-            width: 16px;
-            height: 16px;
-            cursor: pointer;
-        }
-
-        @media (max-width: 480px) {
-            .login-container {
-                padding: 30px 20px;
-            }
-
-            h1 {
-                font-size: 24px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'blog/css/formstyle.css' %}">
 </head>
 <body>
+    <!-- Error Message pop-up -->
+    {% if error_message %}
+    <div id="errorAlert" class="alert-popup" role="alert" aria-live="assertive">
+        <div class="alert-icon" aria-hidden="true">!</div>
+        <div class="message">
+            <span class="title">Error</span>
+            <span class="detail">{{ error_message }}</span>
+        </div>
+        <button id="errorAlertClose" class="alert-close" type="button" aria-label="Close">&times;</button>
+    </div>
+    {% endif %}
     <div class="login-container">
         <h1>Login</h1>
         <form method="post">
@@ -239,4 +45,15 @@
         </div>
     </div>
 </body>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+    var alertEl = document.getElementById('errorAlert');
+    var closeBtn = document.getElementById('errorAlertClose');
+    if (!alertEl || !closeBtn) return;
+    closeBtn.addEventListener('click', function(){
+        alertEl.classList.add('hide');
+        setTimeout(function(){ if (alertEl && alertEl.parentNode) alertEl.parentNode.removeChild(alertEl); }, 260);
+    });
+});
+</script>
 </html>
